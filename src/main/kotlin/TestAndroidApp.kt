@@ -1,9 +1,11 @@
+import android_ui_elements.ButtonTests.randomButtonWillChangeJoke
 import android_ui_elements.NavigationsTests.activityChanged
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.remote.MobileCapabilityType
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.remote.DesiredCapabilities
 import java.net.URL
@@ -29,15 +31,16 @@ class TestAndroidApp {
     @Test
     fun splashScreenTest() {
         Assert.assertNotNull(driver.context)
-       driver.apply {
-         Assert.assertTrue(activityChanged(3000))
-       }
+        driver.apply {
+            activityChanged(3000)
+        }
     }
 
     @Test
     fun showJokesActivityTest() {
         Thread.sleep(3000)
-        println(driver.currentPackage+driver.currentActivity())
+        driver.activityChanged(3000)
+        println(driver.currentPackage + driver.currentActivity())
         // (driver as AndroidDriver).startActivity(Activity("com.example.chucknorrisjokes", "MarkJokeCategoryActivity"))
 //        val androidDriver = driver as AndroidDriver<MobileElement>
 //        androidDriver.startActivity(
@@ -47,30 +50,21 @@ class TestAndroidApp {
 //            ).setAppWaitPackage("com.example.chucknorrisjokes")
 //                .setAppWaitActivity(".ui.MarkJokeCategoryActivity")
 //        )
-        val randomButton = driver.findElementById("com.example.chucknorrisjokes:id/random_Button_ID")
-        val jokeTextContent = driver.findElementById("com.example.chucknorrisjokes:id/Text_viewID")
-        val openFavoriteActivityButton =
-            driver.findElementById("com.example.chucknorrisjokes:id/favorite_ImageView_ID")
-        val openCategoryActivityButton =
-            driver.findElementById("com.example.chucknorrisjokes:id/choseCategory_Button_ID")
-        val likingButton = driver.findElementById("com.example.chucknorrisjokes:id/favorite_Button_ID")
 
-
-        //androidDriver.navigate().back()
-        repeat(20){
-            val oldJokeText = jokeTextContent.text
-
-            randomButton.click()
+        driver.apply {
+            val openFavoriteActivityButton = findElementById("com.example.chucknorrisjokes:id/favorite_ImageView_ID")
+            val openCategoryActivityButton = findElementById("com.example.chucknorrisjokes:id/choseCategory_Button_ID")
+            val likingButton = findElementById("com.example.chucknorrisjokes:id/favorite_Button_ID")
+            println( likingButton.getCssValue("color"))
             likingButton.click()
-            //println(oldJokeText+"--->"+ jokeTextContent.text)
-            Assert.assertNotEquals(oldJokeText, jokeTextContent.text)
-
+            println( likingButton.getCssValue("color"))
+            randomButtonWillChangeJoke(20)
+            //  navigate().back()
+            println(driver.currentActivity())
+            openFavoriteActivityButton.click()
+            println(driver.currentActivity())
 
         }
-        println(driver.currentActivity())
-        openFavoriteActivityButton.click()
-        println(driver.currentActivity())
-
     }
 
 //    @Test
