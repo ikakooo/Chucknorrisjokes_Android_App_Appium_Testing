@@ -11,4 +11,11 @@ object NavigationsTests {
         Thread.sleep(SpendingTime)
        Assert.assertNotEquals(oldActivity,currentActivity())
     }
+
+    fun AndroidDriver<WebElement>.activityChangedOnButtonClick(button:WebElement){
+        val oldActivity= currentActivity()
+        button.click()
+        Assert.assertNotEquals(oldActivity,currentActivity())
+        navigate().back()
+    }
 }

@@ -1,5 +1,6 @@
 import android_ui_elements.ButtonTests.randomButtonWillChangeJoke
 import android_ui_elements.NavigationsTests.activityChanged
+import android_ui_elements.NavigationsTests.activityChangedOnButtonClick
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.remote.MobileCapabilityType
 import org.junit.Assert
@@ -60,9 +61,7 @@ class TestAndroidApp {
             println( likingButton.getCssValue("color"))
             randomButtonWillChangeJoke(20)
             //  navigate().back()
-            println(driver.currentActivity())
-            openFavoriteActivityButton.click()
-            println(driver.currentActivity())
+            activityChangedOnButtonClick(openFavoriteActivityButton)
 
         }
     }
