@@ -1,4 +1,5 @@
-import io.appium.java_client.AppiumDriver
+import android_ui_elements.NavigationsTests.activityChanged
+import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.remote.MobileCapabilityType
 import org.junit.Assert
 import org.junit.Before
@@ -9,38 +10,83 @@ import java.net.URL
 
 
 class TestAndroidApp {
-    lateinit var androidDriver: AppiumDriver<WebElement>
+    lateinit var driver: AndroidDriver<WebElement>
+    //lateinit var androidDriver: AndroidDriver<WebElement>
 
     @Before
     fun driverAndEmulatorSetup() {
         val cap = DesiredCapabilities()
         cap.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5554")
+        // cap.setCapability(CapabilityType.PLATFORM_NAME,"android")
         cap.setCapability("platformName", "android")
         cap.setCapability("appPackage", "com.example.chucknorrisjokes")
         cap.setCapability("appActivity", ".ui.SplashScreenActivity")
         cap.setCapability("noReset", true)
-        androidDriver = AppiumDriver(URL("http://localhost:4723/wd/hub"), cap)
-        Thread.sleep(2000)
+        driver = AndroidDriver(URL("http://localhost:4723/wd/hub"), cap)
+        // Thread.sleep(2000)
     }
 
     @Test
     fun splashScreenTest() {
-        Assert.assertNotNull(androidDriver.context)
+        Assert.assertNotNull(driver.context)
+       driver.apply {
+         Assert.assertTrue(activityChanged(3000))
+       }
     }
 
     @Test
     fun showJokesActivityTest() {
-        val randomButton = androidDriver.findElementById("com.example.chucknorrisjokes:id/random_Button_ID")
-        val jokeTextContent = androidDriver.findElementById("com.example.chucknorrisjokes:id/Text_viewID")
+        Thread.sleep(3000)
+        println(driver.currentPackage+driver.currentActivity())
+        // (driver as AndroidDriver).startActivity(Activity("com.example.chucknorrisjokes", "MarkJokeCategoryActivity"))
+//        val androidDriver = driver as AndroidDriver<MobileElement>
+//        androidDriver.startActivity(
+//            Activity(
+//                "com.example.chucknorrisjokes",
+//                ".ui.MarkJokeCategoryActivity"
+//            ).setAppWaitPackage("com.example.chucknorrisjokes")
+//                .setAppWaitActivity(".ui.MarkJokeCategoryActivity")
+//        )
+        val randomButton = driver.findElementById("com.example.chucknorrisjokes:id/random_Button_ID")
+        val jokeTextContent = driver.findElementById("com.example.chucknorrisjokes:id/Text_viewID")
         val openFavoriteActivityButton =
-            androidDriver.findElementById("com.example.chucknorrisjokes:id/favorite_ImageView_ID")
+            driver.findElementById("com.example.chucknorrisjokes:id/favorite_ImageView_ID")
         val openCategoryActivityButton =
-            androidDriver.findElementById("com.example.chucknorrisjokes:id/choseCategory_Button_ID")
-        val likingButton = androidDriver.findElementById("com.example.chucknorrisjokes:id/choseCategory_Button_ID")
-        val oldText = jokeTextContent.text
-        randomButton.click()
-        Assert.assertNotEquals(oldText,jokeTextContent.text)
+            driver.findElementById("com.example.chucknorrisjokes:id/choseCategory_Button_ID")
+        val likingButton = driver.findElementById("com.example.chucknorrisjokes:id/favorite_Button_ID")
+
+
+        //androidDriver.navigate().back()
+        repeat(20){
+            val oldJokeText = jokeTextContent.text
+
+            randomButton.click()
+            likingButton.click()
+            //println(oldJokeText+"--->"+ jokeTextContent.text)
+            Assert.assertNotEquals(oldJokeText, jokeTextContent.text)
+
+
+        }
+        println(driver.currentActivity())
+        openFavoriteActivityButton.click()
+        println(driver.currentActivity())
+
     }
+
+//    @Test
+//    fun startActivityWithWaitingAppTestCase() {
+//        val activity = Activity(
+//            "io.appium.android.apis",
+//            ".accessibility.AccessibilityNodeProviderActivity"
+//        )
+//            .setAppWaitPackage("io.appium.android.apis")
+//            .setAppWaitActivity(".accessibility.AccessibilityNodeProviderActivity")
+//        driver.startActivity(activity)
+//        assertEquals(
+//            driver.currentActivity(),
+//            ".accessibility.AccessibilityNodeProviderActivity"
+//        )
+//    }
 
     @Test
     fun markJokeCategoryActivityTest() {
@@ -54,10 +100,11 @@ class TestAndroidApp {
 
     }
 
-//    @After
+
+//    @AfterClass
 //    fun quiteTests() {
-//        androidDriver.close()
-//        androidDriver.quit()
+//        driver.close()
+//        driver.quit()
 //    }
 
 
