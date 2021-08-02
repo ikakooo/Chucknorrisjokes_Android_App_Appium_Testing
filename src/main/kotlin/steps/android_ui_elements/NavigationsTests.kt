@@ -1,8 +1,8 @@
-package android_ui_elements
+package steps.android_ui_elements
 
 import io.appium.java_client.android.AndroidDriver
-import org.junit.Assert
 import org.openqa.selenium.WebElement
+import org.testng.Assert
 
 object NavigationsTests {
 

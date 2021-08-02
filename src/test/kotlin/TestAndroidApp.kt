@@ -1,14 +1,11 @@
-import android_ui_elements.ButtonTests.randomButtonWillChangeJoke
-import android_ui_elements.NavigationsTests.activityChanged
-import android_ui_elements.NavigationsTests.activityChangedOnButtonClick
+import steps.android_ui_elements.ButtonTests.randomButtonWillChangeJoke
+import steps.android_ui_elements.NavigationsTests.activityChanged
+import steps.android_ui_elements.NavigationsTests.activityChangedOnButtonClick
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.remote.MobileCapabilityType
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
-import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.remote.DesiredCapabilities
+import org.testng.Assert
 import java.net.URL
 
 
@@ -16,7 +13,6 @@ class TestAndroidApp {
     lateinit var driver: AndroidDriver<WebElement>
     //lateinit var androidDriver: AndroidDriver<WebElement>
 
-    @Before
     fun driverAndEmulatorSetup() {
         val cap = DesiredCapabilities()
         cap.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5554")
@@ -29,7 +25,7 @@ class TestAndroidApp {
         // Thread.sleep(2000)
     }
 
-    @Test
+
     fun splashScreenTest() {
         Assert.assertNotNull(driver.context)
         driver.apply {
@@ -37,7 +33,7 @@ class TestAndroidApp {
         }
     }
 
-    @Test
+
     fun showJokesActivityTest() {
         Thread.sleep(3000)
         driver.activityChanged(3000)
@@ -81,13 +77,11 @@ class TestAndroidApp {
 //        )
 //    }
 
-    @Test
+
     fun markJokeCategoryActivityTest() {
 
 
     }
-
-    @Test
     fun favoritesActivityTest() {
 
 
